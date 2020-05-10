@@ -16,7 +16,7 @@ function getPost($key, $regex = false) {
 
 $firstname = getPost("firstname", "/^[A-Za-z- ]{2,90}$/");
 $lastname = getPost("lastname", "/^[A-Za-z- ]{2,90}$/");
-$username = getPost("username", "/^[A-Za-z0-9\_\- ]{2,90}$/");
+$username = getPost("username", "/^[A-Za-z0-9\_\-. ]{2,90}$/");
 $email = filter_var(getPost("email"), FILTER_VALIDATE_EMAIL);
 $password = getPost("password");
 

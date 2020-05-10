@@ -1,0 +1,16 @@
+<div [ngClass]="setClasses()">
+  <div class="header">
+    <input [(ngModel)]="chatname" type="text">
+    <button (click)="createChat()">Create new chat</button>
+  </div>
+  <div class="body">
+    <div *ngFor="let chat of chatService.chats">
+      <div class="chat" (click)="joinChat(chat.id)">
+        {{ chat.name }}
+      </div>
+    </div>
+    <div class="buttons">
+      <button (click)="chatService.refreshChats()">Refresh</button>
+    </div>
+  </div>
+</div>

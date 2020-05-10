@@ -5,6 +5,15 @@ require( __DIR__ . "/../include/database.php");
 
 use Firebase\JWT\JWT;
 
+function verifyWebsocket() {
+  $value = shell_exec('ps aux | grep "php"');
+  $found = strpos($value, "chatsockets.php") !== false;
+  if(!$found) {
+    shell_exec("php " . __DIR__ . "/../cli/chatsockets.php > /dev/null 2>/dev/null &");
+    sleep(1); // Give websockets time to start.
+  }
+}
+
 if(!isset($_POST["email"]) || !isset($_POST["password"])) {
   echo json_encode([
     "status" => "error",
@@ -29,6 +38,7 @@ if($stmt->execute()) {
   } else {
     $user = $result->fetch_assoc();
     if(password_verify($password, $user["password"])) {
+      verifyWebsocket();
       $payload = [
         'userid'   => $user["id"],
         'username' => $user["username"],

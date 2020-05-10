@@ -1,0 +1,13 @@
+<div [ngClass]="setClasses()">
+  <div class="header">
+    <h1>Members</h1>
+    <button (click)="closeMembers()">Close</button>
+  </div>
+  <div class="body">
+    <div *ngFor="let member of chatService.members">
+      <div class="member">
+        {{ member.name }}
+      </div>
+    </div>
+  </div>
+</div>

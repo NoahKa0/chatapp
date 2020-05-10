@@ -11,7 +11,7 @@ $config = [
     "baseUri" => "http://noahk.ddns.net/Websites/chatapp/"
   ],
   "ratchet" => [
-    "baseUri" => "ws://noahk.ddns.net/",
+    "baseUri" => "ws://noahk.ddns.net",
     "port"    => 8080
   ],
   'json_webtoken' => [
@@ -21,4 +21,17 @@ $config = [
 
 if(file_exists(__DIR__ . '/config_custom.php')) {
   include(__DIR__ . '/config_custom.php');
+}
+
+function setHeader($header, $value) {
+  header($header . ": " . $value, true);
+}
+setHeader("Access-Control-Allow-Origin", "*");
+setHeader("Access-Control-Allow-Credentials", "true");
+setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+setHeader("Access-Control-Allow-Headers", "*");
+
+$headers = getallheaders();
+if(isset($headers["Content-Type"]) && $headers["Content-Type"] == "application/json") {
+  $_POST = json_decode(file_get_contents("php://input"), true);
 }

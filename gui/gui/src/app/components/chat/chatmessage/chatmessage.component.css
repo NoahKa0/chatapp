@@ -1,0 +1,20 @@
+.message {
+  width: auto;
+  max-width: 80%;
+  background: #1E2529;
+  color: white;
+  border-radius: 5px 5px 5px 0;
+  margin: 8px;
+  padding: 3px;
+  box-shadow: rgb(14, 17, 19) 1px 1px 5px;
+}
+
+.message.mymessage {
+  margin-left: auto;
+  background-color: #001A38;
+}
+
+.header {
+  text-decoration: underline;
+  font-weight: bold;
+}

@@ -1,0 +1,8 @@
+<div [ngClass]="setClasses()">
+  <div class="errors">{{ errorMessage }}</div>
+  <div class="items">
+    <button (click)="chatService.leaveChat()">Leave</button>
+    <h1>{{ chatService.chatName }}</h1>
+    <button (click)="showMembers()">Members</button>
+  </div>
+</div>

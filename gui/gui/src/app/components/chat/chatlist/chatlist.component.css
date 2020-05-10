@@ -1,0 +1,32 @@
+@import "../../../../assets/css/chat.css";
+
+.chatlist {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  background-color: #1E2529;
+  box-shadow: rgb(14, 17, 19) 1px 1px 5px;
+}
+
+.header {
+  display: flex;
+  padding: 5px;
+  background-color: #2F3133;
+  text-align: center;
+}
+
+.chat {
+  color: white;
+  padding: 10px;
+}
+
+.chat:hover {
+  padding: 10px;
+  background-color: #171D20;
+}
+
+.body .buttons {
+  text-align: center;
+}

@@ -31,6 +31,8 @@ class ChatServer implements MessageComponentInterface {
    */
   protected $chats;
   protected $lastChat;
+  
+  protected $server;
 
   public function __construct($config) {
     $this->config = $config;
@@ -42,7 +44,7 @@ class ChatServer implements MessageComponentInterface {
 
   public function start() {
     $port = $this->config["ratchet"]["port"];
-    $server = IoServer::factory(
+    $this->server = IoServer::factory(
       new HttpServer(
         new WsServer(
           $this
@@ -53,7 +55,7 @@ class ChatServer implements MessageComponentInterface {
 
     printf('Started websocket server on port ' . $port . PHP_EOL);
 
-    $server->run();
+    $this->server->run();
   }
 
   public function onOpen(ConnectionInterface $conn) {
@@ -66,8 +68,17 @@ class ChatServer implements MessageComponentInterface {
     $user = $this->connections[$conn->resourceId][1];
     if($user !== null && isset($this->users[$user])) {
       unset($this->users[$user]);
+      foreach($this->chats as $id => $chat) {
+        if(isset($chat['users'][$user])) {
+          unset($this->chats[$id]['users'][$user]);
+        }
+      }
     }
     unset($this->connections[$conn->resourceId]);
+
+    if(empty($this->connections)) {
+      $this->server->loop->stop();
+    }
 
     printf('Connection closed: ' . $conn->resourceId . PHP_EOL);
   }
@@ -94,6 +105,9 @@ class ChatServer implements MessageComponentInterface {
           break;
         case 'joinChat':
           $response = $this->joinChat($conn, $message);
+          break;
+        case 'leaveChat':
+          $response = $this->leaveChat($conn, $message);
           break;
         case 'sendMessage':
           $response = $this->sendMessage($conn, $message);
@@ -216,6 +230,7 @@ class ChatServer implements MessageComponentInterface {
       ];
     }
     $msg = htmlspecialchars($message['message']);
+    $username = $this->users[$userid]['username'];
     $chatid = (int) $message['chatid'];
     if(!isset($this->chats[$chatid]) || !isset($this->chats[$chatid]['users'][$userid])) {
       return [
@@ -225,14 +240,16 @@ class ChatServer implements MessageComponentInterface {
     }
 
     foreach($this->chats[$chatid]['users'] as $id => $name) {
-      $msg = [
+      $dataToSend = [
+        'type'        => 'message',
         'message'     => $msg,
         'userid'      => $userid,
-        'username'    => $name,
-        'senderIsMe'  => $id == $userid
+        'username'    => $username,
+        'senderIsMe'  => $id == $userid,
+        'chat'        => $chatid
       ];
 
-      $this->connections[$this->users[$id]['resource']][0]->send(json_encode($msg));
+      $this->connections[$this->users[$id]['resource']][0]->send(json_encode($dataToSend));
     }
   }
 
@@ -279,7 +296,52 @@ class ChatServer implements MessageComponentInterface {
     ];
   }
 
-    /**
+  /**
+   * Leaves a chat.
+   * 
+   * @param ConnectionInterface $conn
+   * @param array $message
+   * 
+   * @return array json response
+   */
+  public function leaveChat($conn, $message) {
+    $userid = $this->connections[$conn->resourceId][1];
+    if($userid === null) {
+      return [
+        'status' => 'error',
+        'error'  => 'Unauthenticated!'
+      ];
+    }
+    if(!isset($message['chatid'])) {
+      return [
+        'status' => 'error',
+        'error'  => 'No chat id provided!'
+      ];
+    }
+    $chatid = (int) $message['chatid'];
+
+    if(!isset($this->chats[$chatid])) {
+      return [
+        'status' => 'error',
+        'error'  => 'Chat not found!'
+      ];
+    }
+
+    if(!isset($this->chats[$chatid]['users'][$userid])) {
+      return [
+        'status' => 'error',
+        'error'  => 'You are not a member!'
+      ];
+    }
+
+    unset($this->chats[$chatid]['users'][$userid]);
+
+    return [
+      'status' => 'success'
+    ];
+  }
+
+  /**
    * Creates a chat.
    * 
    * @param ConnectionInterface $conn
@@ -333,11 +395,11 @@ class ChatServer implements MessageComponentInterface {
       return false;
     }
 
-    if(isset($this->chats['users'][$userid])) {
+    if(isset($this->chats[$chatid]['users'][$userid])) {
       return false;
     }
 
-    $this->chats['users'][$userid] = $this->users[$userid];
+    $this->chats[$chatid]['users'][$userid] = $this->users[$userid]['username'];
 
     return true;
   }

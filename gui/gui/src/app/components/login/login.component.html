@@ -1,0 +1,23 @@
+<main>
+  <form>
+    <div class="input-group input-group-lg">
+      <input (change)="changeFormValue($event)" class="form-control" type="text" name="email" placeholder="E-mail">
+    </div>
+
+    <div class="input-group input-group-lg">
+      <input (change)="changeFormValue($event)" class="form-control" type="password" name="password" placeholder="Password">
+    </div>
+
+    <div class="input-group input-group-lg form-center">
+      <button (click)="onFormSubmit($event, loginForm)" class="btn btn-lg btn-secondary">Login</button>
+    </div>
+
+    <div [ngClass]="statusMessageClasses()">
+      {{ statusMessage }}
+    </div>
+
+    <div class="form-center">
+      <a href="register">Or register</a>
+    </div>
+  </form>
+</main>
