@@ -942,7 +942,7 @@ class AuthenticationService {
     constructor(http, router) {
         this.http = http;
         this.router = router;
-        this.baseUrl = "http://noahk.ddns.net/Websites/chatapp/api/";
+        this.baseUrl = "https://noahk.ddns.net/Websites/chatapp/api/";
         this.errors = new rxjs__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
     }
     login(data) {

@@ -10,7 +10,7 @@ export class AuthenticationService {
 
   token:string;
 
-  baseUrl:string = "http://noahk.ddns.net/Websites/chatapp/api/";
+  baseUrl:string = "https://noahk.ddns.net/Websites/chatapp/api/";
 
   errors: Subject<string> = new Subject<string>();
 
