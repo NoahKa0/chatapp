@@ -18,7 +18,8 @@ export class ChatmessageComponent implements OnInit {
   setClasses() {
     return {
       message: true,
-      mymessage: this.message.senderIsMe
+      mymessage: this.message.senderIsMe,
+      special: this.message.senderIsMe || this.message.userid == -1
     };
   }
 
