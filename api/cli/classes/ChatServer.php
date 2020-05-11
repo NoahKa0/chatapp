@@ -69,7 +69,7 @@ class ChatServer implements MessageComponentInterface {
     if($user !== null && isset($this->users[$user])) {
       unset($this->users[$user]);
       foreach($this->chats as $id => $chat) {
-        $username $this->chats[$id]['users'][$user];
+        $username = $this->chats[$id]['users'][$user];
         if(isset($chat['users'][$user])) {
           unset($this->chats[$id]['users'][$user]);
           foreach($this->chats[$id]['users'] as $id => $name) {
