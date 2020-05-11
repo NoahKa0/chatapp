@@ -79,7 +79,7 @@ class ChatServer implements MessageComponentInterface {
               'userid'      => -1,
               'username'    => $username,
               'senderIsMe'  => false,
-              'chat'        => $chatid
+              'chat'        => $id
             ];
             $this->connections[$this->users[$id]['resource']][0]->send(json_encode($dataToSend));
           }
