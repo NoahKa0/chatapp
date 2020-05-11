@@ -11,7 +11,7 @@ $config = [
     "baseUri" => "http://noahk.ddns.net/Websites/chatapp/"
   ],
   "ratchet" => [
-    "baseUri" => "ws://noahk.ddns.net",
+    "baseUri" => "wss://noahk.ddns.net:8081",
     "port"    => 8080
   ],
   'json_webtoken' => [

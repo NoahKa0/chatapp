@@ -51,7 +51,7 @@ if($stmt->execute()) {
       echo json_encode([
         'status'    => 'success',
         'token'     => JWT::encode($payload, $config["json_webtoken"]["key"]),
-        'websocket' => $config["ratchet"]["baseUri"] . ':' . $config["ratchet"]["port"]
+        'websocket' => $config["ratchet"]["baseUri"]
       ]);
     } else {
       echo json_encode([
