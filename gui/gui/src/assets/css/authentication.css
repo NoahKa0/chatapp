@@ -2,9 +2,10 @@ main{
   background-color:rgba(0, 0, 0, 0.66);
   backdrop-filter: blur(10px);
   position: absolute;
-  left:50%;
-  top:50%;
-  transform: translate(-50%,-50%);
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
   padding: 1rem 1rem 2rem 1rem;
   box-shadow: 1px 10px 6px rgba(0, 0, 0, 0.16);
   border-radius: 1rem;
@@ -38,9 +39,12 @@ button {
   text-align: center;
 }
 
-@media screen and (max-width: 600px){
-  
+@media screen and (min-width: 600px){
   main{
-    width: 90%;
+    height: initial;
+    width: initial;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
   }
 }
