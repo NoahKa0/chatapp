@@ -68,18 +68,18 @@ class ChatServer implements MessageComponentInterface {
     $user = $this->connections[$conn->resourceId][1];
     if($user !== null && isset($this->users[$user])) {
       unset($this->users[$user]);
-      foreach($this->chats as $id => $chat) {
-        $username = $this->chats[$id]['users'][$user];
+      foreach($this->chats as $chatid => $chat) {
+        $username = $this->chats[$chatid]['users'][$user];
         if(isset($chat['users'][$user])) {
-          unset($this->chats[$id]['users'][$user]);
-          foreach($this->chats[$id]['users'] as $id => $name) {
+          unset($this->chats[$chatid]['users'][$user]);
+          foreach($this->chats[$chatid]['users'] as $id => $name) {
             $dataToSend = [
               'type'        => 'message',
               'message'     => 'Has left the chat.',
               'userid'      => -1,
               'username'    => $username,
               'senderIsMe'  => false,
-              'chat'        => $id
+              'chat'        => $chatid
             ];
             $this->connections[$this->users[$id]['resource']][0]->send(json_encode($dataToSend));
           }
