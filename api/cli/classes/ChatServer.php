@@ -69,8 +69,20 @@ class ChatServer implements MessageComponentInterface {
     if($user !== null && isset($this->users[$user])) {
       unset($this->users[$user]);
       foreach($this->chats as $id => $chat) {
+        $username $this->chats[$id]['users'][$user];
         if(isset($chat['users'][$user])) {
           unset($this->chats[$id]['users'][$user]);
+          foreach($this->chats[$id]['users'] as $id => $name) {
+            $dataToSend = [
+              'type'        => 'message',
+              'message'     => 'Has left the chat.',
+              'userid'      => -1,
+              'username'    => $username,
+              'senderIsMe'  => false,
+              'chat'        => $chatid
+            ];
+            $this->connections[$this->users[$id]['resource']][0]->send(json_encode($dataToSend));
+          }
         }
       }
     }
@@ -291,6 +303,19 @@ class ChatServer implements MessageComponentInterface {
       ];
     }
 
+    $username = $this->users[$userid]['username'];
+    foreach($this->chats[$chatid]['users'] as $id => $name) {
+      $dataToSend = [
+        'type'        => 'message',
+        'message'     => 'Has joined.',
+        'userid'      => -1,
+        'username'    => $username,
+        'senderIsMe'  => false,
+        'chat'        => $chatid
+      ];
+      $this->connections[$this->users[$id]['resource']][0]->send(json_encode($dataToSend));
+    }
+
     return [
       'status' => 'success'
     ];
@@ -334,7 +359,22 @@ class ChatServer implements MessageComponentInterface {
       ];
     }
 
+    $username = $this->chats[$chatid]['users'][$userid];
+
     unset($this->chats[$chatid]['users'][$userid]);
+
+    foreach($this->chats[$chatid]['users'] as $id => $name) {
+      $dataToSend = [
+        'type'        => 'message',
+        'message'     => 'Has left the chat.',
+        'userid'      => -1,
+        'username'    => $username,
+        'senderIsMe'  => false,
+        'chat'        => $chatid
+      ];
+
+      $this->connections[$this->users[$id]['resource']][0]->send(json_encode($dataToSend));
+    }
 
     return [
       'status' => 'success'
