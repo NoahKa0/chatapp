@@ -36,7 +36,6 @@ export class ChatheaderComponent implements OnInit {
   }
 
   showMembers() {
-    this.chatService.refreshChats();
     this.chatService.showMembers = !this.chatService.showMembers;
   }
 

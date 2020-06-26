@@ -17,7 +17,6 @@ export class ChatlistComponent implements OnInit {
 
   ngOnInit(): void {
     this.chatname = "";
-    this.chatService.refreshChats();
   }
 
   setClasses() {

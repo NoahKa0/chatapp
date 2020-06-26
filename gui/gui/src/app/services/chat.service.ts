@@ -19,6 +19,7 @@ export class ChatService {
   selectedChat: number;
   chatName: string;
   errors: Subject<string> = new Subject<string>();
+  refreshInterval;
 
   constructor(private router:Router) {
     if(sessionStorage.getItem("userToken") === null || sessionStorage.getItem("websocketUrl") === null) {
@@ -30,6 +31,7 @@ export class ChatService {
     this.showMembers = false;
     this.selectedChat = -1;
     this.chatName = "";
+    this.refreshInterval = null;
   }
 
   setupSocket() {
@@ -63,6 +65,12 @@ export class ChatService {
         console.log("Connection closed!");
       }
     });
+
+    if(this.refreshInterval === null) {
+      this.refreshInterval = setInterval(() => {
+        this.refreshChats();
+      }, 1000);
+    }
   }
 
   authenticate() {
