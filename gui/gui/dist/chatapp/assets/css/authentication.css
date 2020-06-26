@@ -1,0 +1,50 @@
+main{
+  background-color:rgba(0, 0, 0, 0.66);
+  backdrop-filter: blur(10px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  padding: 1rem 1rem 2rem 1rem;
+  box-shadow: 1px 10px 6px rgba(0, 0, 0, 0.16);
+  border-radius: 1rem;
+}
+
+.form-control {
+  background-color: rgb(66, 66, 66);
+  color: white;
+  border-radius: .5rem;
+  margin: 5px 0px;
+}
+.form-control::placeholder{
+  text-align: center;
+}
+.form-center {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+button {
+  width: 70%;
+  margin-top: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1rem !important;
+  color: white !important;
+}
+
+.status-message {
+  margin: 1rem;
+  text-align: center;
+}
+
+@media screen and (min-width: 600px){
+  main{
+    height: initial;
+    width: initial;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+  }
+}
