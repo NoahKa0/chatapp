@@ -1,5 +1,5 @@
 <IfModule mod_rewrite.c>
 	RewriteEngine on
-	RewriteRule  ^$ gui/dist/chatapp    [L]
+	RewriteRule  ^$ gui/dist/chatapp/    [L]
 	RewriteRule  (.*) gui/dist/chatapp/$1 [L]
 </IfModule>
